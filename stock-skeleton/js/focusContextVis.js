@@ -184,7 +184,6 @@ class FocusContextVis {
                 .attr('transform', `translate(${vis.xScaleFocus(d.date)},${(vis.yScaleFocus(d.close) - 15)})`)
                 .text(Math.round(d.close));
           });
-      
       // Update the axes
       vis.xAxisFocusG.call(vis.xAxisFocus);
       vis.yAxisFocusG.call(vis.yAxisFocus);
@@ -196,7 +195,6 @@ class FocusContextVis {
           .call(vis.brush)
           .call(vis.brush.move, defaultBrushSelection);
     }
-  
     /**
      * React to brush events
      */

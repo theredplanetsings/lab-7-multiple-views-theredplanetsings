@@ -20,5 +20,4 @@ d3.csv('data/sp_500_index.csv')
     // Initialize and render chart
     focusContextVis = new FocusContextVis({ parentElement: '#chart'}, data);
     focusContextVis.updateVis();
-  });
-
+  })
