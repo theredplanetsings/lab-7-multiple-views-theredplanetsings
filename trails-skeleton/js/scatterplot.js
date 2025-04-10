@@ -118,6 +118,7 @@ class Scatterplot {
         console.log(num);
         return value + num;
     }
+    
     /**
      * Bind data to visual elements.
      */
