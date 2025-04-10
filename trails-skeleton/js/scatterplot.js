@@ -153,7 +153,6 @@ class Scatterplot {
           .on('mouseleave', () => {
             d3.select('#tooltip').style('display', 'none');
           });
-      
       // Update the axes/gridlines
       // We use the second .call() to remove the axis and just show gridlines
       vis.xAxisG
