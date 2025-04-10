@@ -3,9 +3,10 @@ class Barchart {
     /**
      * Class constructor with basic chart configuration
      * @param {Object}
+     * @param {Object} _dispatcher
      * @param {Array}
      */
-    constructor(_config, _data) {
+    constructor(_config, _dispatcher, _data) {
       // Configuration object with defaults
       this.config = {
         parentElement: _config.parentElement,
@@ -14,6 +15,7 @@ class Barchart {
         containerHeight: _config.containerHeight || 300,
         margin: _config.margin || {top: 25, right: 20, bottom: 20, left: 40},
       }
+      this.dispatcher = _dispatcher;
       this.data = _data;
       this.initVis();
     }
@@ -108,10 +110,29 @@ class Barchart {
      */
     renderVis() {
       let vis = this;
-  
       // Add rectangles --> be sure to use vis.config.colorScale!
-      
-  
+      const bars = vis.chart.selectAll('.bar')
+          .data(vis.aggregatedData, vis.xValue)
+        .join('rect')
+          .attr('class', 'bar')
+          .attr('x', d => vis.xScale(vis.xValue(d)))
+          .attr('y', d => vis.yScale(vis.yValue(d)))
+          .attr('width', vis.xScale.bandwidth())
+          .attr('height', d => vis.height - vis.yScale(vis.yValue(d)))
+          .attr('fill', d => vis.config.colorScale(vis.colorValue(d)))
+          .on('click', function(event, d) {
+            // Check if current category is active and toggle class
+            const isActive = d3.select(this).classed('active');
+            d3.select(this).classed('active', !isActive);
+
+            // Get the names of all active/filtered categories
+            const selectedCategories = vis.chart.selectAll('.bar.active').data().map(k => k.key);
+            console.log(selectedCategories);
+
+            // Call dispatcher and pass the event name, D3 event object,
+            // and our custom event data (selected category names)
+            vis.dispatcher.call('filterCategories', event, selectedCategories);
+          });
       // Update axes
       vis.xAxisG.call(vis.xAxis);
       vis.yAxisG.call(vis.yAxis);
