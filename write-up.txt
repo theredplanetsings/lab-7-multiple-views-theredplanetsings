@@ -1,0 +1,9 @@
+1) How long did this take (estimate)?
+~5 hours
+2) What were the enjoyable aspects of the lab?
+I enjoyed the stock visualisation, as I have an interest in finance-type tools.
+3) What were the challenging parts of this lab?
+Probably linking the multiple views and ensuring the interactions worked without issues.
+4) What resources did you use? Include links to websites below. 
+https://d3js.org/
+https://education.github.com/git-cheat-sheet-education.pdf
