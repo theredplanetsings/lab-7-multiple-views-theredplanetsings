@@ -1,5 +1,4 @@
 class Scatterplot {
-
     /**
      * Class constructor with basic chart configuration
      * @param {Object}
@@ -17,7 +16,6 @@ class Scatterplot {
       this.data = _data;
       this.initVis();
     }
-    
     /**
      * We initialize scales/axes and append static elements, such as axis titles.
      */
@@ -33,7 +31,16 @@ class Scatterplot {
   
       vis.yScale = d3.scaleLinear()
           .range([vis.height, 0]);
-  
+
+      // initialises symbol scale
+      vis.symbolScale = d3.scaleOrdinal()
+        .range([
+          d3.symbol().type(d3.symbolCircle)(),
+          d3.symbol().type(d3.symbolSquare)(),
+          d3.symbol().type(d3.symbolDiamond)()
+        ])
+        .domain(['Easy', 'Intermediate', 'Difficult']);
+
       // Initialize axes
       vis.xAxis = d3.axisBottom(vis.xScale)
           .ticks(6)
@@ -99,29 +106,39 @@ class Scatterplot {
   
       vis.renderVis();
     }
-  
+      /**
+       * Change the position slightly to better see if multiple symbols 
+       * share the same coordinates
+       */
+      jitter(value) {
+        // this will get a number between 1 and 5;
+        var num = Math.floor(Math.random()*5) + 1; 
+        // this will add minus sign in 50% of cases
+        num *= Math.round(Math.random()) ? 1 : -1; 
+        console.log(num);
+        return value + num;
+    }
     /**
      * Bind data to visual elements.
      */
     renderVis() {
       let vis = this;
-  
-      // Add circles
-      const circles = vis.chart.selectAll('.point')
+    
+      // Add symbols
+      const symbols = vis.chart.selectAll('.symbol')
           .data(vis.data, d => d.trail)
-        .join('circle')
-          .attr('class', 'point')
-          .attr('r', 4)
-          .attr('cy', d => vis.yScale(vis.yValue(d)))
-          .attr('cx', d => vis.xScale(vis.xValue(d)))
+        .join('path')
+          .attr('class', 'symbol')
+          .attr('transform', d => `translate(${vis.jitter(vis.xScale(vis.xValue(d)))}, ${vis.yScale(vis.yValue(d))})`)
+          .attr('d', d => vis.symbolScale(d.difficulty))
           .attr('fill', d => vis.config.colorScale(vis.colorValue(d)));
-  
+    
       // Tooltip event listeners
-      circles
-          .on('mouseover', (event,d) => {
+      symbols
+          .on('mouseover', (event, d) => {
             d3.select('#tooltip')
               .style('display', 'block')
-              .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')   
+              .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')
               .style('top', (event.pageY + vis.config.tooltipPadding) + 'px')
               .html(`
                 <div class="tooltip-title">${d.trail}</div>
