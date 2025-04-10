@@ -85,4 +85,10 @@ body {
     margin: 5px 0 0 0;
     padding-left: 20px;
   }
-  
+
+  .bar:hover {
+    stroke: #777;
+  }
+  .bar.active {
+    stroke: #333;
+  }
