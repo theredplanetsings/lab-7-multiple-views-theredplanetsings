@@ -104,7 +104,6 @@ class Barchart {
   
       vis.renderVis();
     }
-  
     /**
      * Bind data to visual elements
      */

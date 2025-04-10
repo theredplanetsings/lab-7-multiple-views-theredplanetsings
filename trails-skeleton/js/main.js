@@ -43,7 +43,6 @@ dispatcher.on('filterCategories', selectedCategories => {
   }
   scatterplot.updateVis();
 });
-
 /**
  * Use bar chart as filter and update scatter plot accordingly
 function filterData() {
